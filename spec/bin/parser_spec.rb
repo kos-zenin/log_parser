@@ -4,13 +4,15 @@ describe 'parse' do
   context 'integration tests' do
     context 'when no argument were provided' do
       it 'writes to stderr an error' do
-        expect { system('bin/parser.rb') }.to output("correct usage is 'bin/bundle webserver.log'\n").to_stderr_from_any_process
+        expect do
+          system('bin/parser.rb')
+        end.to output("correct usage is 'bin/bundle webserver.log'\n").to_stderr_from_any_process
       end
     end
 
     context 'when correct arguments' do
       let(:expected_output) do
-        %{
+        %(
           /about/2 90 views
           /contact 89 views
           /index 82 views
@@ -24,7 +26,7 @@ describe 'parse' do
           /home 23 views
           /about/2 22 views
           /about 21 views
-        }
+        )
       end
 
       it 'runs the script' do

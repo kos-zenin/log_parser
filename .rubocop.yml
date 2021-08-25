@@ -1,0 +1,16 @@
+AllCops:
+  NewCops: enable
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/BlockLength:
+  IgnoredMethods:
+    - describe
+    - context
+
+Style/StructInheritance:
+  Enabled: false
