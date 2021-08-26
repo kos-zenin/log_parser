@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe ::Main do
   subject do
-    described_class.new(file, logs_reader: ::Files::Readers::LogReader, analyzers: analyzers, reporter: reporter)
+    described_class.new(file, logs_reader: ::Files::Readers::LogReader, analyzers: analyzers)
   end
 
   let(:logs_reader) { instance_double(::Files::Readers::LogReader, call: visits) }
@@ -26,6 +26,7 @@ describe ::Main do
       expect(::Files::Readers::LogReader).to receive(:new).with(file).and_return(logs_reader)
       expect(::Analyzers::CountAnalyzer).to receive(:new).with(visits).and_return(count_analyzer)
       expect(::Analyzers::UniqAnalyzer).to receive(:new).with(visits).and_return(uniq_analyzer)
+      expect(::Reporters::Stdout).to receive(:new).and_return(reporter).twice
     end
 
     it 'calls log reader, analyzes visits and reports' do
@@ -33,6 +34,16 @@ describe ::Main do
       expect(reporter).to receive(:call).with(uniq_stats)
 
       subject.call
+    end
+  end
+
+  describe "DECORATORS_MAPPING" do
+    it "decorates count stats" do
+      expect(described_class::DECORATORS_MAPPING.fetch(:count).call(["/route", 3])).to eq("/route 3 views")
+    end
+
+    it "decorates uniq stats" do
+      expect(described_class::DECORATORS_MAPPING.fetch(:uniq).call(["/route", 3])).to eq("/route 3 unique views")
     end
   end
 end
