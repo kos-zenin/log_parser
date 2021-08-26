@@ -19,7 +19,6 @@ describe 'parse' do
           /about 81 views
           /help_page/1 80 views
           /home 78 views
-
           /contact 23 unique views
           /index 23 unique views
           /help_page/1 23 unique views

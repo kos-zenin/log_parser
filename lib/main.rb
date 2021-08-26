@@ -11,7 +11,7 @@ class Main
     uniq: ->((route, visits_count)) { [route, visits_count, "unique", visits_count == 1 ? "view" : "views"].join(" ") },
   }.freeze
 
-  def initialize(file, logs_reader: nil, analyzers: [], reporter: ::Reporters::Stdout)
+  def initialize(file, logs_reader: ::Files::Readers::LogReader, analyzers: [], reporter: ::Reporters::Stdout)
     @logs_reader = logs_reader.new(file)
     @analyzers = analyzers
     @reporter = reporter
@@ -29,8 +29,10 @@ class Main
   private
 
   def collect_visits
-    @logs_reader.call do |route, ip|
-      visits << ::Datum::Visit.new(route, ip)
+    [].tap do |visits|
+      @logs_reader.call do |route, ip|
+        visits << ::Datum::Visit.new(route, ip)
+      end
     end
   end
 end
