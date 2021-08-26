@@ -6,6 +6,8 @@ module Reporters
       @decorator = decorator
     end
 
-    def call(data); end
+    def call(messages)
+      puts(messages.map { @decorator.call(_1) })
+    end
   end
 end
