@@ -7,7 +7,7 @@ describe ::Main do
     described_class.new(file, logs_reader: ::Files::Readers::LogReader, analyzers: analyzers)
   end
 
-  let(:logs_reader) { instance_double(::Files::Readers::LogReader, call: visits) }
+  let(:logs_reader) { instance_double(::Files::Readers::LogReader) }
   let(:analyzers) { %i[count uniq] }
   let(:reporter) { instance_double(::Reporters::Stdout) }
   let(:count_analyzer) { instance_double(::Analyzers::CountAnalyzer, call: count_stats) }
@@ -24,6 +24,9 @@ describe ::Main do
   describe '.call' do
     before do
       expect(::Files::Readers::LogReader).to receive(:new).with(file).and_return(logs_reader)
+      expect(logs_reader).to receive(:call).and_yield("/route2", 3).and_yield("/route1", 3)
+      expect(::Datum::Visit).to receive(:new).with("/route2", 3).and_return(visit1)
+      expect(::Datum::Visit).to receive(:new).with("/route1", 3).and_return(visit2)
       expect(::Analyzers::CountAnalyzer).to receive(:new).with(visits).and_return(count_analyzer)
       expect(::Analyzers::UniqAnalyzer).to receive(:new).with(visits).and_return(uniq_analyzer)
       expect(::Reporters::Stdout).to receive(:new).and_return(reporter).twice
