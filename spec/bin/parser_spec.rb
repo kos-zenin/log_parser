@@ -29,7 +29,7 @@ describe 'parse' do
       end
 
       it 'runs the script' do
-        expect { system('bin/parser.rb files/webserver.log') }.to output(expected_output).to_stdout_from_any_process
+        expect { system('bin/parser.rb spec/files/webserver.log') }.to output(expected_output).to_stdout_from_any_process
       end
     end
   end
