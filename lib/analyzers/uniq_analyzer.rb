@@ -9,6 +9,7 @@ module Analyzers
     def call
       aggregate_visits
         .transform_values { |ips| ips.uniq.size }
+        .sort_by { |_, number_of_visits| -number_of_visits }
     end
 
     private

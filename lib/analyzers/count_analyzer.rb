@@ -7,9 +7,9 @@ module Analyzers
     end
 
     def call
-      @visits.each_with_object(Hash.new(0)) do |visit, memo|
-        memo[visit.route] += 1
-      end
+      @visits
+        .each_with_object(Hash.new(0)) { |visit, memo| memo[visit.route] += 1 }
+        .sort_by { |_, number_of_visits| -number_of_visits }
     end
   end
 end
