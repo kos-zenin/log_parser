@@ -19,13 +19,13 @@ describe 'parse' do
           /about 81 views
           /help_page/1 80 views
           /home 78 views
-          /contact 23 unique views
-          /index 23 unique views
           /help_page/1 23 unique views
+          /contact 23 unique views
           /home 23 unique views
+          /index 23 unique views
           /about/2 22 unique views
           /about 21 unique views
-        )
+        ).gsub(/^\s+/, '')
       end
 
       it 'runs the script' do
