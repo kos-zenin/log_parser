@@ -2,6 +2,10 @@
 
 module Reporters
   class Stdout
+    def initialize(decorator: ->(message) { message })
+      @decorator = decorator
+    end
+
     def call(data); end
   end
 end
