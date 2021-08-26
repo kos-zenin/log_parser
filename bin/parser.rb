@@ -5,4 +5,4 @@ abort("correct usage is 'bin/bundle webserver.log'") unless ARGV[0]
 
 require_relative './../config/boot'
 
-::Main.new(ARGV[0], analyzers: [:count, :uniq]).call
+::Main.new(ARGV[0], analyzers: %i[count uniq]).call

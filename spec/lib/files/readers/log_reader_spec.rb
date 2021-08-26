@@ -41,10 +41,10 @@ describe ::Files::Readers::LogReader do
     end
 
     context 'when file is ok' do
-      let(:expected_lines) { [['line', '1'], ['line', '2']] }
+      let(:expected_lines) { [%w[line 1], %w[line 2]] }
 
       before do
-        expect(lazy_enumerator).to receive(:each).and_yield("line 1").and_yield("line 2")
+        expect(lazy_enumerator).to receive(:each).and_yield('line 1').and_yield('line 2')
       end
 
       it 'yields line by line' do

@@ -24,9 +24,9 @@ describe ::Main do
   describe '.call' do
     before do
       expect(::Files::Readers::LogReader).to receive(:new).with(file).and_return(logs_reader)
-      expect(logs_reader).to receive(:call).and_yield("/route2", 3).and_yield("/route1", 3)
-      expect(::Datum::Visit).to receive(:new).with("/route2", 3).and_return(visit1)
-      expect(::Datum::Visit).to receive(:new).with("/route1", 3).and_return(visit2)
+      expect(logs_reader).to receive(:call).and_yield('/route2', 3).and_yield('/route1', 3)
+      expect(::Datum::Visit).to receive(:new).with('/route2', 3).and_return(visit1)
+      expect(::Datum::Visit).to receive(:new).with('/route1', 3).and_return(visit2)
       expect(::Analyzers::CountAnalyzer).to receive(:new).with(visits).and_return(count_analyzer)
       expect(::Analyzers::UniqAnalyzer).to receive(:new).with(visits).and_return(uniq_analyzer)
       expect(::Reporters::Stdout).to receive(:new).and_return(reporter).twice
@@ -40,13 +40,13 @@ describe ::Main do
     end
   end
 
-  describe "DECORATORS_MAPPING" do
-    it "decorates count stats" do
-      expect(described_class::DECORATORS_MAPPING.fetch(:count).call(["/route", 3])).to eq("/route 3 views")
+  describe 'DECORATORS_MAPPING' do
+    it 'decorates count stats' do
+      expect(described_class::DECORATORS_MAPPING.fetch(:count).call(['/route', 3])).to eq('/route 3 views')
     end
 
-    it "decorates uniq stats" do
-      expect(described_class::DECORATORS_MAPPING.fetch(:uniq).call(["/route", 3])).to eq("/route 3 unique views")
+    it 'decorates uniq stats' do
+      expect(described_class::DECORATORS_MAPPING.fetch(:uniq).call(['/route', 3])).to eq('/route 3 unique views')
     end
   end
 end

@@ -8,14 +8,14 @@ describe ::Datum::Visit do
   let(:route) { '/test/2' }
   let(:ip) { '1.1.1.1' }
 
-  describe "route" do
-    it "should return route" do
+  describe 'route' do
+    it 'should return route' do
       expect(subject.route).to eq(route)
     end
   end
 
-  describe "ip" do
-    it "should return ip" do
+  describe 'ip' do
+    it 'should return ip' do
       expect(subject.ip).to eq(ip)
     end
   end

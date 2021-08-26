@@ -7,8 +7,8 @@ class Main
   }.freeze
 
   DECORATORS_MAPPING = {
-    count: ->((route, visits_count)) { [route, visits_count, visits_count == 1 ? "view" : "views"].join(" ") },
-    uniq: ->((route, visits_count)) { [route, visits_count, "unique", visits_count == 1 ? "view" : "views"].join(" ") },
+    count: ->((route, visits_count)) { [route, visits_count, visits_count == 1 ? 'view' : 'views'].join(' ') },
+    uniq: ->((route, visits_count)) { [route, visits_count, 'unique', visits_count == 1 ? 'view' : 'views'].join(' ') }
   }.freeze
 
   def initialize(file, logs_reader: ::Files::Readers::LogReader, analyzers: [], reporter: ::Reporters::Stdout)

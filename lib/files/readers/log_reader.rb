@@ -3,7 +3,7 @@
 module Files
   module Readers
     class LogReader
-      WHITELIST_EXTENSIONS = %w[.log].freeze
+      ALLOWLIST_EXTENSIONS = %w[.log].freeze
 
       def initialize(file, file_proxy: File)
         @file = file
@@ -14,7 +14,7 @@ module Files
         validate!(@file)
 
         open_file(@file).lazy.each do |line|
-          yield line.split(' ')
+          yield line.split
         end
       end
 
@@ -27,7 +27,7 @@ module Files
       end
 
       def validate!(file)
-        raise ArgumentError, 'Check file extension' unless WHITELIST_EXTENSIONS.include?(@file_proxy.extname(file))
+        raise ArgumentError, 'Check file extension' unless ALLOWLIST_EXTENSIONS.include?(@file_proxy.extname(file))
       end
     end
   end
