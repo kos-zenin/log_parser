@@ -6,7 +6,12 @@ class Main
     uniq: ::Analyzers::UniqAnalyzer
   }.freeze
 
-  def initialize(file, logs_reader: nil, analyzers: [], reporter: ::Reporters::Stdout.new)
+  DECORATORS_MAPPING = {
+    count: ->((route, visits_count)) { [route, visits_count, visits_count == 1 ? "view" : "views"].join(" ") },
+    uniq: ->((route, visits_count)) { [route, visits_count, "unique", visits_count == 1 ? "view" : "views"].join(" ") },
+  }.freeze
+
+  def initialize(file, logs_reader: nil, analyzers: [], reporter: ::Reporters::Stdout)
     @logs_reader = logs_reader.new(file)
     @analyzers = analyzers
     @reporter = reporter
@@ -15,7 +20,8 @@ class Main
   def call
     collect_visits.then do |visits|
       @analyzers.each do |analyzer|
-        ANALYZERS_MAPPING.fetch(analyzer).new(visits).call.then { @reporter.call(_1) }
+        reporter = @reporter.new(decorator: DECORATORS_MAPPING.fetch(analyzer))
+        ANALYZERS_MAPPING.fetch(analyzer).new(visits).call.then { reporter.call(_1) }
       end
     end
   end
