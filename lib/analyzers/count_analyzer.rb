@@ -6,6 +6,10 @@ module Analyzers
       @visits = visits
     end
 
-    def call; end
+    def call
+      @visits.each_with_object(Hash.new(0)) do |visit, memo|
+        memo[visit.route] += 1
+      end
+    end
   end
 end
