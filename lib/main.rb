@@ -31,7 +31,9 @@ class Main
   def collect_visits
     [].tap do |visits|
       @logs_reader.call do |route, ip|
-        visits << ::Datum::Visit.new(route, ip)
+        visit = ::Datum::Visit.new(route, ip)
+
+        visits << visit if visit.valid?
       end
     end
   end
