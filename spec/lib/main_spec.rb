@@ -15,8 +15,9 @@ describe ::Main do
 
   let(:file) { 'webserver.log' }
   let(:visits) { [visit1, visit2] }
-  let(:visit1) { instance_double(::Datum::Visit) }
-  let(:visit2) { instance_double(::Datum::Visit) }
+  let(:visit1) { instance_double(::Datum::Visit, valid?: true) }
+  let(:visit2) { instance_double(::Datum::Visit, valid?: true) }
+  let(:invalid_visit) { instance_double(::Datum::Visit, valid?: false) }
 
   let(:count_stats) { 'count_stats' }
   let(:uniq_stats) { 'uniq_stats' }
@@ -24,9 +25,10 @@ describe ::Main do
   describe '.call' do
     before do
       expect(::Files::Readers::LogReader).to receive(:new).with(file).and_return(logs_reader)
-      expect(logs_reader).to receive(:call).and_yield('/route2', 3).and_yield('/route1', 3)
+      expect(logs_reader).to receive(:call).and_yield('/route2', 3).and_yield('/route1', 3).and_yield('--', nil)
       expect(::Datum::Visit).to receive(:new).with('/route2', 3).and_return(visit1)
       expect(::Datum::Visit).to receive(:new).with('/route1', 3).and_return(visit2)
+      expect(::Datum::Visit).to receive(:new).with('--', nil).and_return(invalid_visit)
       expect(::Analyzers::CountAnalyzer).to receive(:new).with(visits).and_return(count_analyzer)
       expect(::Analyzers::UniqAnalyzer).to receive(:new).with(visits).and_return(uniq_analyzer)
       expect(::Reporters::Stdout).to receive(:new).and_return(reporter).twice
